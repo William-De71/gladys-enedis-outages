@@ -1,0 +1,11 @@
+Gladys Enedis outages integration
+Copyright 2026 William Deren
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Enedis is a trademark of its owner. This community integration is not
+affiliated with, endorsed or sponsored by Enedis. It reads the public outage
+map of www.enedis.fr.
+
+Addresses are found with the geocoding service of the Géoplateforme (IGN,
+Base Adresse Nationale, Licence Ouverte / Open Licence 2.0).

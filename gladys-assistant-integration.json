@@ -1,0 +1,1584 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Coupures Enedis",
+  "description": {
+    "en": "Power outages in your commune and on your street, from the Enedis map.",
+    "fr": "Coupures de courant dans votre commune et votre rue, d’après la carte Enedis.",
+    "de": "Stromausfälle in Ihrer Gemeinde und Straße, laut Enedis-Karte.",
+    "es": "Cortes de luz en su municipio y su calle, según el mapa de Enedis."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/william-de71/gladys-enedis-outages:0.1.0",
+  "gladys_version": ">=5.3.0",
+  "categories": ["energy"],
+  "keywords": [
+    "coupure",
+    "panne",
+    "électricité",
+    "power outage",
+    "réseau électrique",
+    "linky",
+    "tempête",
+    "délestage"
+  ],
+  "countries": ["FR"],
+  "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-enedis-outages/main/cover.jpg",
+  "transports": ["cloud"],
+  "location": true,
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Enedis outage map",
+        "fr": "Carte des coupures Enedis",
+        "de": "Enedis-Ausfallkarte",
+        "es": "Mapa de cortes de Enedis"
+      },
+      "description": {
+        "en": "The outages come from the public outage map of enedis.fr (“Panne et interruption”): no account, no key. Enedis serves about 95 % of mainland France; a commune served by a local company (Strasbourg, Grenoble, Metz…) is not covered. Enedis lists streets or substations, not homes: “on my street” is likely, not certain. This is not an official Enedis service.",
+        "fr": "Les coupures viennent de la carte publique des coupures d’enedis.fr (« Panne et interruption ») : sans compte ni clé. Enedis dessert environ 95 % de la France métropolitaine ; une commune desservie par une régie locale (Strasbourg, Grenoble, Metz…) n’est pas couverte. Enedis cite des rues ou des postes, pas des logements : « dans ma rue » est probable, pas certain. Ce n’est pas un service officiel d’Enedis.",
+        "de": "Die Ausfälle stammen aus der öffentlichen Ausfallkarte von enedis.fr („Panne et interruption“): ohne Konto, ohne Schlüssel. Enedis versorgt etwa 95 % des französischen Festlands; eine Gemeinde mit lokalem Versorger (Straßburg, Grenoble, Metz…) ist nicht abgedeckt. Enedis nennt Straßen oder Stationen, keine Wohnungen: „in meiner Straße“ ist wahrscheinlich, nicht sicher. Kein offizieller Dienst von Enedis.",
+        "es": "Los cortes proceden del mapa público de cortes de enedis.fr («Panne et interruption»): sin cuenta ni clave. Enedis abastece cerca del 95 % de la Francia continental; un municipio abastecido por una empresa local (Estrasburgo, Grenoble, Metz…) no está cubierto. Enedis cita calles o centros, no viviendas: «en mi calle» es probable, no seguro. No es un servicio oficial de Enedis."
+      },
+      "links": [
+        {
+          "url": "https://www.enedis.fr/resultat-panne-interruption",
+          "label": {
+            "en": "Enedis outage map",
+            "fr": "Carte des coupures Enedis",
+            "de": "Enedis-Ausfallkarte",
+            "es": "Mapa de cortes de Enedis"
+          }
+        }
+      ]
+    },
+    {
+      "key": "places",
+      "type": "section",
+      "label": {
+        "en": "Places",
+        "fr": "Lieux",
+        "de": "Orte",
+        "es": "Lugares"
+      },
+      "description": {
+        "en": "Choose a house of Gladys (located in Settings > Houses), or type an address. Each place becomes a device in the Discover tab. Up to three places.",
+        "fr": "Choisissez une maison de Gladys (placée dans Paramètres > Maisons), ou saisissez une adresse. Chaque lieu devient un appareil dans l’onglet Découverte. Jusqu’à trois lieux.",
+        "de": "Wählen Sie ein Haus von Gladys (verortet unter Einstellungen > Häuser) oder geben Sie eine Adresse ein. Jeder Ort wird zu einem Gerät im Tab Entdecken. Bis zu drei Orte.",
+        "es": "Elija una casa de Gladys (situada en Ajustes > Casas), o escriba una dirección. Cada lugar se convierte en un dispositivo en la pestaña Descubrir. Hasta tres lugares."
+      }
+    },
+    {
+      "key": "house_1",
+      "type": "select",
+      "source": "houses",
+      "label": {
+        "en": "House",
+        "fr": "Maison",
+        "de": "Haus",
+        "es": "Casa"
+      },
+      "description": {
+        "en": "Its location in Gladys gives the nearest address.",
+        "fr": "Sa position dans Gladys donne l’adresse la plus proche.",
+        "de": "Ihr Standort in Gladys ergibt die nächste Adresse.",
+        "es": "Su ubicación en Gladys da la dirección más cercana."
+      },
+      "required": false
+    },
+    {
+      "key": "address_1",
+      "type": "string",
+      "label": {
+        "en": "Or an address",
+        "fr": "Ou une adresse",
+        "de": "Oder eine Adresse",
+        "es": "O una dirección"
+      },
+      "description": {
+        "en": "Wins over the house. Without a street, only the commune is watched.",
+        "fr": "Prime sur la maison. Sans rue, seule la commune est surveillée.",
+        "de": "Hat Vorrang vor dem Haus. Ohne Straße wird nur die Gemeinde überwacht.",
+        "es": "Prevalece sobre la casa. Sin calle, solo se vigila el municipio."
+      },
+      "placeholder": {
+        "en": "12 rue des Ursulines 71000 Mâcon",
+        "fr": "12 rue des Ursulines 71000 Mâcon",
+        "de": "12 rue des Ursulines 71000 Mâcon",
+        "es": "12 rue des Ursulines 71000 Mâcon"
+      },
+      "required": false
+    },
+    {
+      "key": "place_2_section",
+      "type": "section",
+      "label": {
+        "en": "Place 2",
+        "fr": "Lieu 2",
+        "de": "Ort 2",
+        "es": "Lugar 2"
+      }
+    },
+    {
+      "key": "house_2",
+      "type": "select",
+      "source": "houses",
+      "label": {
+        "en": "House",
+        "fr": "Maison",
+        "de": "Haus",
+        "es": "Casa"
+      },
+      "description": {
+        "en": "Its location in Gladys gives the nearest address.",
+        "fr": "Sa position dans Gladys donne l’adresse la plus proche.",
+        "de": "Ihr Standort in Gladys ergibt die nächste Adresse.",
+        "es": "Su ubicación en Gladys da la dirección más cercana."
+      },
+      "required": false
+    },
+    {
+      "key": "address_2",
+      "type": "string",
+      "label": {
+        "en": "Or an address",
+        "fr": "Ou une adresse",
+        "de": "Oder eine Adresse",
+        "es": "O una dirección"
+      },
+      "description": {
+        "en": "Wins over the house. Without a street, only the commune is watched.",
+        "fr": "Prime sur la maison. Sans rue, seule la commune est surveillée.",
+        "de": "Hat Vorrang vor dem Haus. Ohne Straße wird nur die Gemeinde überwacht.",
+        "es": "Prevalece sobre la casa. Sin calle, solo se vigila el municipio."
+      },
+      "placeholder": {
+        "en": "12 rue des Ursulines 71000 Mâcon",
+        "fr": "12 rue des Ursulines 71000 Mâcon",
+        "de": "12 rue des Ursulines 71000 Mâcon",
+        "es": "12 rue des Ursulines 71000 Mâcon"
+      },
+      "required": false
+    },
+    {
+      "key": "place_3_section",
+      "type": "section",
+      "label": {
+        "en": "Place 3",
+        "fr": "Lieu 3",
+        "de": "Ort 3",
+        "es": "Lugar 3"
+      }
+    },
+    {
+      "key": "house_3",
+      "type": "select",
+      "source": "houses",
+      "label": {
+        "en": "House",
+        "fr": "Maison",
+        "de": "Haus",
+        "es": "Casa"
+      },
+      "description": {
+        "en": "Its location in Gladys gives the nearest address.",
+        "fr": "Sa position dans Gladys donne l’adresse la plus proche.",
+        "de": "Ihr Standort in Gladys ergibt die nächste Adresse.",
+        "es": "Su ubicación en Gladys da la dirección más cercana."
+      },
+      "required": false
+    },
+    {
+      "key": "address_3",
+      "type": "string",
+      "label": {
+        "en": "Or an address",
+        "fr": "Ou une adresse",
+        "de": "Oder eine Adresse",
+        "es": "O una dirección"
+      },
+      "description": {
+        "en": "Wins over the house. Without a street, only the commune is watched.",
+        "fr": "Prime sur la maison. Sans rue, seule la commune est surveillée.",
+        "de": "Hat Vorrang vor dem Haus. Ohne Straße wird nur die Gemeinde überwacht.",
+        "es": "Prevalece sobre la casa. Sin calle, solo se vigila el municipio."
+      },
+      "placeholder": {
+        "en": "12 rue des Ursulines 71000 Mâcon",
+        "fr": "12 rue des Ursulines 71000 Mâcon",
+        "de": "12 rue des Ursulines 71000 Mâcon",
+        "es": "12 rue des Ursulines 71000 Mâcon"
+      },
+      "required": false
+    },
+    {
+      "key": "options",
+      "type": "section",
+      "label": {
+        "en": "Options",
+        "fr": "Options",
+        "de": "Optionen",
+        "es": "Opciones"
+      }
+    },
+    {
+      "key": "interval",
+      "type": "select",
+      "default": "15",
+      "required": false,
+      "label": {
+        "en": "Enedis read every",
+        "fr": "Enedis lu toutes les",
+        "de": "Enedis gelesen alle",
+        "es": "Enedis leído cada"
+      },
+      "description": {
+        "en": "One request per place and per reading.",
+        "fr": "Une requête par lieu et par lecture.",
+        "de": "Eine Anfrage pro Ort und Abfrage.",
+        "es": "Una petición por lugar y por lectura."
+      },
+      "options": [
+        {
+          "value": "5",
+          "label": {
+            "en": "5 minutes",
+            "fr": "5 minutes",
+            "de": "5 Minuten",
+            "es": "5 minutos"
+          }
+        },
+        {
+          "value": "10",
+          "label": {
+            "en": "10 minutes",
+            "fr": "10 minutes",
+            "de": "10 Minuten",
+            "es": "10 minutos"
+          }
+        },
+        {
+          "value": "15",
+          "label": {
+            "en": "15 minutes",
+            "fr": "15 minutes",
+            "de": "15 Minuten",
+            "es": "15 minutos"
+          }
+        },
+        {
+          "value": "30",
+          "label": {
+            "en": "30 minutes",
+            "fr": "30 minutes",
+            "de": "30 Minuten",
+            "es": "30 minutos"
+          }
+        },
+        {
+          "value": "60",
+          "label": {
+            "en": "60 minutes",
+            "fr": "60 minutes",
+            "de": "60 Minuten",
+            "es": "60 minutos"
+          }
+        }
+      ]
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "default": "auto",
+      "required": false,
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "Device names and scene summaries. Automatic follows the language of the dashboard.",
+        "fr": "Noms des appareils et résumés des scènes. Automatique suit la langue du tableau de bord.",
+        "de": "Gerätenamen und Szenen-Zusammenfassungen. Automatisch folgt der Sprache des Dashboards.",
+        "es": "Nombres de dispositivos y resúmenes de escenas. Automático sigue el idioma del panel."
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": {
+            "en": "Automatic",
+            "fr": "Automatique",
+            "de": "Automatisch",
+            "es": "Automático"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "English",
+            "de": "English",
+            "es": "English"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "Français",
+            "fr": "Français",
+            "de": "Français",
+            "es": "Français"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "Deutsch",
+            "fr": "Deutsch",
+            "de": "Deutsch",
+            "es": "Deutsch"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Español",
+            "fr": "Español",
+            "de": "Español",
+            "es": "Español"
+          }
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "key": "check_places",
+      "timeout_seconds": 90,
+      "label": {
+        "en": "Check the places",
+        "fr": "Vérifier les lieux",
+        "de": "Orte prüfen",
+        "es": "Comprobar los lugares"
+      },
+      "description": {
+        "en": "Finds the places again, shows the commune and the street found, and reads Enedis now.",
+        "fr": "Retrouve les lieux, affiche la commune et la rue trouvées, et lit Enedis tout de suite.",
+        "de": "Ermittelt die Orte neu, zeigt Gemeinde und Straße und liest Enedis sofort.",
+        "es": "Vuelve a buscar los lugares, muestra el municipio y la calle encontrados y lee Enedis ahora."
+      }
+    }
+  ],
+  "widgets": [
+    {
+      "key": "outages",
+      "label": {
+        "en": "Power outages",
+        "fr": "Coupures de courant",
+        "de": "Stromausfälle",
+        "es": "Cortes de luz"
+      },
+      "description": {
+        "en": "Your street, the outages of the commune and their expected restoration.",
+        "fr": "Votre rue, les coupures de la commune et leur rétablissement prévu.",
+        "de": "Ihre Straße, die Ausfälle der Gemeinde und ihre erwartete Wiederversorgung.",
+        "es": "Su calle, los cortes del municipio y su restablecimiento previsto."
+      },
+      "icon": "zap-off",
+      "settings": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "Leave empty for the first place.",
+            "fr": "Laisser vide pour le premier lieu.",
+            "de": "Leer lassen für den ersten Ort.",
+            "es": "Dejar vacío para el primer lugar."
+          },
+          "required": false
+        },
+        {
+          "key": "show",
+          "type": "select",
+          "label": {
+            "en": "Outages shown",
+            "fr": "Coupures affichées",
+            "de": "Angezeigte Ausfälle",
+            "es": "Cortes mostrados"
+          },
+          "options": [
+            {
+              "value": "all",
+              "label": {
+                "en": "All the commune",
+                "fr": "Toute la commune",
+                "de": "Ganze Gemeinde",
+                "es": "Todo el municipio"
+              }
+            },
+            {
+              "value": "street",
+              "label": {
+                "en": "My street only",
+                "fr": "Ma rue seulement",
+                "de": "Nur meine Straße",
+                "es": "Solo mi calle"
+              }
+            }
+          ],
+          "default": "all",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "outage_started",
+      "label": {
+        "en": "Enedis: power outage",
+        "fr": "Enedis : coupure de courant",
+        "de": "Enedis: Stromausfall",
+        "es": "Enedis: corte de luz"
+      },
+      "description": {
+        "en": "Enedis reports a new outage in the commune of a place, on its street or elsewhere.",
+        "fr": "Enedis signale une nouvelle coupure dans la commune d’un lieu, dans sa rue ou ailleurs.",
+        "de": "Enedis meldet einen neuen Ausfall in der Gemeinde eines Ortes, in seiner Straße oder anderswo.",
+        "es": "Enedis indica un nuevo corte en el municipio de un lugar, en su calle o en otro sitio."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Enedis places. Leave empty for any place.",
+            "fr": "Un des lieux Enedis. Laisser vide pour tous les lieux.",
+            "de": "Einer der Enedis-Orte. Leer lassen für alle Orte.",
+            "es": "Uno de los lugares de Enedis. Dejar vacío para cualquier lugar."
+          },
+          "required": false
+        },
+        {
+          "key": "scope",
+          "type": "select",
+          "label": {
+            "en": "Where",
+            "fr": "Où",
+            "de": "Wo",
+            "es": "Dónde"
+          },
+          "description": {
+            "en": "Leave empty for the whole commune.",
+            "fr": "Laisser vide pour toute la commune.",
+            "de": "Leer lassen für die ganze Gemeinde.",
+            "es": "Dejar vacío para todo el municipio."
+          },
+          "options": [
+            {
+              "value": "street",
+              "label": {
+                "en": "On my street only",
+                "fr": "Dans ma rue seulement",
+                "de": "Nur in meiner Straße",
+                "es": "Solo en mi calle"
+              }
+            },
+            {
+              "value": "commune",
+              "label": {
+                "en": "Elsewhere in the commune",
+                "fr": "Ailleurs dans la commune",
+                "de": "Anderswo in der Gemeinde",
+                "es": "En otro lugar del municipio"
+              }
+            }
+          ],
+          "required": false
+        },
+        {
+          "key": "kind",
+          "type": "select",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          },
+          "description": {
+            "en": "Leave empty for every kind.",
+            "fr": "Laisser vide pour tous les types.",
+            "de": "Leer lassen für alle Arten.",
+            "es": "Dejar vacío para todos los tipos."
+          },
+          "options": [
+            {
+              "value": "incident",
+              "label": {
+                "en": "Breakdown",
+                "fr": "Incident",
+                "de": "Störung",
+                "es": "Avería"
+              }
+            },
+            {
+              "value": "works",
+              "label": {
+                "en": "Planned works",
+                "fr": "Travaux",
+                "de": "Arbeiten",
+                "es": "Obras"
+              }
+            },
+            {
+              "value": "shedding",
+              "label": {
+                "en": "Load shedding",
+                "fr": "Délestage",
+                "de": "Lastabwurf",
+                "es": "Deslastre"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Andere",
+                "es": "Otro"
+              }
+            }
+          ],
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          },
+          "description": {
+            "en": "incident, works, shedding or other.",
+            "fr": "incident, works, shedding ou other.",
+            "de": "incident, works, shedding oder other.",
+            "es": "incident, works, shedding u other."
+          }
+        },
+        {
+          "key": "label",
+          "type": "string",
+          "label": {
+            "en": "Enedis label",
+            "fr": "Libellé Enedis",
+            "de": "Enedis-Bezeichnung",
+            "es": "Etiqueta de Enedis"
+          },
+          "description": {
+            "en": "As Enedis writes it: “Incident HTA”, “Travaux BT”…",
+            "fr": "Tel qu’Enedis l’écrit : « Incident HTA », « Travaux BT »…",
+            "de": "Wie Enedis es schreibt: „Incident HTA“, „Travaux BT“…",
+            "es": "Como lo escribe Enedis: «Incident HTA», «Travaux BT»…"
+          }
+        },
+        {
+          "key": "network",
+          "type": "string",
+          "label": {
+            "en": "Network",
+            "fr": "Réseau",
+            "de": "Netz",
+            "es": "Red"
+          },
+          "description": {
+            "en": "BT (low voltage) or HTA (medium voltage); empty when unknown.",
+            "fr": "BT (basse tension) ou HTA (moyenne tension) ; vide si inconnu.",
+            "de": "BT (Niederspannung) oder HTA (Mittelspannung); leer, wenn unbekannt.",
+            "es": "BT (baja tensión) o HTA (media tensión); vacío si se desconoce."
+          }
+        },
+        {
+          "key": "on_my_street",
+          "type": "boolean",
+          "label": {
+            "en": "On my street",
+            "fr": "Dans ma rue",
+            "de": "In meiner Straße",
+            "es": "En mi calle"
+          },
+          "description": {
+            "en": "Enedis lists the street of the place among the places cut.",
+            "fr": "Enedis cite la rue du lieu parmi les lieux coupés.",
+            "de": "Enedis nennt die Straße des Ortes unter den betroffenen Orten.",
+            "es": "Enedis cita la calle del lugar entre los lugares cortados."
+          }
+        },
+        {
+          "key": "streets",
+          "type": "string",
+          "label": {
+            "en": "Places cut",
+            "fr": "Lieux coupés",
+            "de": "Betroffene Orte",
+            "es": "Lugares cortados"
+          },
+          "description": {
+            "en": "Streets or substations, as Enedis gives them.",
+            "fr": "Rues ou postes, tels qu’Enedis les donne.",
+            "de": "Straßen oder Stationen, wie Enedis sie angibt.",
+            "es": "Calles o centros, como los da Enedis."
+          }
+        },
+        {
+          "key": "started_at",
+          "type": "string",
+          "label": {
+            "en": "Start",
+            "fr": "Début",
+            "de": "Beginn",
+            "es": "Inicio"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC).",
+            "fr": "ISO 8601 (UTC).",
+            "de": "ISO 8601 (UTC).",
+            "es": "ISO 8601 (UTC)."
+          }
+        },
+        {
+          "key": "restoration_at",
+          "type": "string",
+          "label": {
+            "en": "Expected restoration",
+            "fr": "Rétablissement prévu",
+            "de": "Erwartete Wiederversorgung",
+            "es": "Restablecimiento previsto"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC); empty when Enedis gives none.",
+            "fr": "ISO 8601 (UTC) ; vide si Enedis n’en donne pas.",
+            "de": "ISO 8601 (UTC); leer, wenn Enedis keine angibt.",
+            "es": "ISO 8601 (UTC); vacío si Enedis no lo da."
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "outage_ended",
+      "label": {
+        "en": "Enedis: power is back",
+        "fr": "Enedis : courant rétabli",
+        "de": "Enedis: Strom wieder da",
+        "es": "Enedis: luz restablecida"
+      },
+      "description": {
+        "en": "An outage of the commune is closed, or Enedis no longer lists it.",
+        "fr": "Une coupure de la commune est close, ou Enedis ne la liste plus.",
+        "de": "Ein Ausfall der Gemeinde ist beendet oder wird nicht mehr gelistet.",
+        "es": "Un corte del municipio está cerrado, o Enedis ya no lo lista."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Enedis places. Leave empty for any place.",
+            "fr": "Un des lieux Enedis. Laisser vide pour tous les lieux.",
+            "de": "Einer der Enedis-Orte. Leer lassen für alle Orte.",
+            "es": "Uno de los lugares de Enedis. Dejar vacío para cualquier lugar."
+          },
+          "required": false
+        },
+        {
+          "key": "scope",
+          "type": "select",
+          "label": {
+            "en": "Where",
+            "fr": "Où",
+            "de": "Wo",
+            "es": "Dónde"
+          },
+          "description": {
+            "en": "Leave empty for the whole commune.",
+            "fr": "Laisser vide pour toute la commune.",
+            "de": "Leer lassen für die ganze Gemeinde.",
+            "es": "Dejar vacío para todo el municipio."
+          },
+          "options": [
+            {
+              "value": "street",
+              "label": {
+                "en": "On my street only",
+                "fr": "Dans ma rue seulement",
+                "de": "Nur in meiner Straße",
+                "es": "Solo en mi calle"
+              }
+            },
+            {
+              "value": "commune",
+              "label": {
+                "en": "Elsewhere in the commune",
+                "fr": "Ailleurs dans la commune",
+                "de": "Anderswo in der Gemeinde",
+                "es": "En otro lugar del municipio"
+              }
+            }
+          ],
+          "required": false
+        },
+        {
+          "key": "kind",
+          "type": "select",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          },
+          "description": {
+            "en": "Leave empty for every kind.",
+            "fr": "Laisser vide pour tous les types.",
+            "de": "Leer lassen für alle Arten.",
+            "es": "Dejar vacío para todos los tipos."
+          },
+          "options": [
+            {
+              "value": "incident",
+              "label": {
+                "en": "Breakdown",
+                "fr": "Incident",
+                "de": "Störung",
+                "es": "Avería"
+              }
+            },
+            {
+              "value": "works",
+              "label": {
+                "en": "Planned works",
+                "fr": "Travaux",
+                "de": "Arbeiten",
+                "es": "Obras"
+              }
+            },
+            {
+              "value": "shedding",
+              "label": {
+                "en": "Load shedding",
+                "fr": "Délestage",
+                "de": "Lastabwurf",
+                "es": "Deslastre"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autre",
+                "de": "Andere",
+                "es": "Otro"
+              }
+            }
+          ],
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          },
+          "description": {
+            "en": "incident, works, shedding or other.",
+            "fr": "incident, works, shedding ou other.",
+            "de": "incident, works, shedding oder other.",
+            "es": "incident, works, shedding u other."
+          }
+        },
+        {
+          "key": "label",
+          "type": "string",
+          "label": {
+            "en": "Enedis label",
+            "fr": "Libellé Enedis",
+            "de": "Enedis-Bezeichnung",
+            "es": "Etiqueta de Enedis"
+          },
+          "description": {
+            "en": "As Enedis writes it: “Incident HTA”, “Travaux BT”…",
+            "fr": "Tel qu’Enedis l’écrit : « Incident HTA », « Travaux BT »…",
+            "de": "Wie Enedis es schreibt: „Incident HTA“, „Travaux BT“…",
+            "es": "Como lo escribe Enedis: «Incident HTA», «Travaux BT»…"
+          }
+        },
+        {
+          "key": "network",
+          "type": "string",
+          "label": {
+            "en": "Network",
+            "fr": "Réseau",
+            "de": "Netz",
+            "es": "Red"
+          },
+          "description": {
+            "en": "BT (low voltage) or HTA (medium voltage); empty when unknown.",
+            "fr": "BT (basse tension) ou HTA (moyenne tension) ; vide si inconnu.",
+            "de": "BT (Niederspannung) oder HTA (Mittelspannung); leer, wenn unbekannt.",
+            "es": "BT (baja tensión) o HTA (media tensión); vacío si se desconoce."
+          }
+        },
+        {
+          "key": "on_my_street",
+          "type": "boolean",
+          "label": {
+            "en": "On my street",
+            "fr": "Dans ma rue",
+            "de": "In meiner Straße",
+            "es": "En mi calle"
+          },
+          "description": {
+            "en": "Enedis lists the street of the place among the places cut.",
+            "fr": "Enedis cite la rue du lieu parmi les lieux coupés.",
+            "de": "Enedis nennt die Straße des Ortes unter den betroffenen Orten.",
+            "es": "Enedis cita la calle del lugar entre los lugares cortados."
+          }
+        },
+        {
+          "key": "streets",
+          "type": "string",
+          "label": {
+            "en": "Places cut",
+            "fr": "Lieux coupés",
+            "de": "Betroffene Orte",
+            "es": "Lugares cortados"
+          },
+          "description": {
+            "en": "Streets or substations, as Enedis gives them.",
+            "fr": "Rues ou postes, tels qu’Enedis les donne.",
+            "de": "Straßen oder Stationen, wie Enedis sie angibt.",
+            "es": "Calles o centros, como los da Enedis."
+          }
+        },
+        {
+          "key": "started_at",
+          "type": "string",
+          "label": {
+            "en": "Start",
+            "fr": "Début",
+            "de": "Beginn",
+            "es": "Inicio"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC).",
+            "fr": "ISO 8601 (UTC).",
+            "de": "ISO 8601 (UTC).",
+            "es": "ISO 8601 (UTC)."
+          }
+        },
+        {
+          "key": "restoration_at",
+          "type": "string",
+          "label": {
+            "en": "Expected restoration",
+            "fr": "Rétablissement prévu",
+            "de": "Erwartete Wiederversorgung",
+            "es": "Restablecimiento previsto"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC); empty when Enedis gives none.",
+            "fr": "ISO 8601 (UTC) ; vide si Enedis n’en donne pas.",
+            "de": "ISO 8601 (UTC); leer, wenn Enedis keine angibt.",
+            "es": "ISO 8601 (UTC); vacío si Enedis no lo da."
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (min)",
+            "fr": "Durée (min)",
+            "de": "Dauer (Min.)",
+            "es": "Duración (min)"
+          },
+          "description": {
+            "en": "From the start Enedis gave to the reading that saw the end.",
+            "fr": "Du début donné par Enedis à la lecture qui a vu la fin.",
+            "de": "Vom von Enedis genannten Beginn bis zur Abfrage, die das Ende sah.",
+            "es": "Desde el inicio dado por Enedis hasta la lectura que vio el final."
+          }
+        }
+      ]
+    },
+    {
+      "key": "restoration_changed",
+      "label": {
+        "en": "Enedis: restoration time moved",
+        "fr": "Enedis : heure de rétablissement modifiée",
+        "de": "Enedis: Wiederversorgung verschoben",
+        "es": "Enedis: hora de restablecimiento cambiada"
+      },
+      "description": {
+        "en": "Enedis postpones or brings forward the expected restoration of an outage in progress.",
+        "fr": "Enedis repousse ou avance le rétablissement prévu d’une coupure en cours.",
+        "de": "Enedis verschiebt die erwartete Wiederversorgung eines laufenden Ausfalls oder zieht sie vor.",
+        "es": "Enedis aplaza o adelanta el restablecimiento previsto de un corte en curso."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Enedis places. Leave empty for any place.",
+            "fr": "Un des lieux Enedis. Laisser vide pour tous les lieux.",
+            "de": "Einer der Enedis-Orte. Leer lassen für alle Orte.",
+            "es": "Uno de los lugares de Enedis. Dejar vacío para cualquier lugar."
+          },
+          "required": false
+        },
+        {
+          "key": "scope",
+          "type": "select",
+          "label": {
+            "en": "Where",
+            "fr": "Où",
+            "de": "Wo",
+            "es": "Dónde"
+          },
+          "description": {
+            "en": "Leave empty for the whole commune.",
+            "fr": "Laisser vide pour toute la commune.",
+            "de": "Leer lassen für die ganze Gemeinde.",
+            "es": "Dejar vacío para todo el municipio."
+          },
+          "options": [
+            {
+              "value": "street",
+              "label": {
+                "en": "On my street only",
+                "fr": "Dans ma rue seulement",
+                "de": "Nur in meiner Straße",
+                "es": "Solo en mi calle"
+              }
+            },
+            {
+              "value": "commune",
+              "label": {
+                "en": "Elsewhere in the commune",
+                "fr": "Ailleurs dans la commune",
+                "de": "Anderswo in der Gemeinde",
+                "es": "En otro lugar del municipio"
+              }
+            }
+          ],
+          "required": false
+        },
+        {
+          "key": "change",
+          "type": "select",
+          "label": {
+            "en": "Change",
+            "fr": "Changement",
+            "de": "Änderung",
+            "es": "Cambio"
+          },
+          "description": {
+            "en": "Leave empty for both.",
+            "fr": "Laisser vide pour les deux.",
+            "de": "Leer lassen für beides.",
+            "es": "Dejar vacío para ambos."
+          },
+          "options": [
+            {
+              "value": "postponed",
+              "label": {
+                "en": "Postponed",
+                "fr": "Repoussé",
+                "de": "Verschoben",
+                "es": "Aplazado"
+              }
+            },
+            {
+              "value": "advanced",
+              "label": {
+                "en": "Brought forward",
+                "fr": "Avancé",
+                "de": "Vorgezogen",
+                "es": "Adelantado"
+              }
+            }
+          ],
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Kind",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          },
+          "description": {
+            "en": "incident, works, shedding or other.",
+            "fr": "incident, works, shedding ou other.",
+            "de": "incident, works, shedding oder other.",
+            "es": "incident, works, shedding u other."
+          }
+        },
+        {
+          "key": "label",
+          "type": "string",
+          "label": {
+            "en": "Enedis label",
+            "fr": "Libellé Enedis",
+            "de": "Enedis-Bezeichnung",
+            "es": "Etiqueta de Enedis"
+          },
+          "description": {
+            "en": "As Enedis writes it: “Incident HTA”, “Travaux BT”…",
+            "fr": "Tel qu’Enedis l’écrit : « Incident HTA », « Travaux BT »…",
+            "de": "Wie Enedis es schreibt: „Incident HTA“, „Travaux BT“…",
+            "es": "Como lo escribe Enedis: «Incident HTA», «Travaux BT»…"
+          }
+        },
+        {
+          "key": "network",
+          "type": "string",
+          "label": {
+            "en": "Network",
+            "fr": "Réseau",
+            "de": "Netz",
+            "es": "Red"
+          },
+          "description": {
+            "en": "BT (low voltage) or HTA (medium voltage); empty when unknown.",
+            "fr": "BT (basse tension) ou HTA (moyenne tension) ; vide si inconnu.",
+            "de": "BT (Niederspannung) oder HTA (Mittelspannung); leer, wenn unbekannt.",
+            "es": "BT (baja tensión) o HTA (media tensión); vacío si se desconoce."
+          }
+        },
+        {
+          "key": "on_my_street",
+          "type": "boolean",
+          "label": {
+            "en": "On my street",
+            "fr": "Dans ma rue",
+            "de": "In meiner Straße",
+            "es": "En mi calle"
+          },
+          "description": {
+            "en": "Enedis lists the street of the place among the places cut.",
+            "fr": "Enedis cite la rue du lieu parmi les lieux coupés.",
+            "de": "Enedis nennt die Straße des Ortes unter den betroffenen Orten.",
+            "es": "Enedis cita la calle del lugar entre los lugares cortados."
+          }
+        },
+        {
+          "key": "streets",
+          "type": "string",
+          "label": {
+            "en": "Places cut",
+            "fr": "Lieux coupés",
+            "de": "Betroffene Orte",
+            "es": "Lugares cortados"
+          },
+          "description": {
+            "en": "Streets or substations, as Enedis gives them.",
+            "fr": "Rues ou postes, tels qu’Enedis les donne.",
+            "de": "Straßen oder Stationen, wie Enedis sie angibt.",
+            "es": "Calles o centros, como los da Enedis."
+          }
+        },
+        {
+          "key": "started_at",
+          "type": "string",
+          "label": {
+            "en": "Start",
+            "fr": "Début",
+            "de": "Beginn",
+            "es": "Inicio"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC).",
+            "fr": "ISO 8601 (UTC).",
+            "de": "ISO 8601 (UTC).",
+            "es": "ISO 8601 (UTC)."
+          }
+        },
+        {
+          "key": "restoration_at",
+          "type": "string",
+          "label": {
+            "en": "Expected restoration",
+            "fr": "Rétablissement prévu",
+            "de": "Erwartete Wiederversorgung",
+            "es": "Restablecimiento previsto"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC); empty when Enedis gives none.",
+            "fr": "ISO 8601 (UTC) ; vide si Enedis n’en donne pas.",
+            "de": "ISO 8601 (UTC); leer, wenn Enedis keine angibt.",
+            "es": "ISO 8601 (UTC); vacío si Enedis no lo da."
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        },
+        {
+          "key": "change",
+          "type": "string",
+          "label": {
+            "en": "Change",
+            "fr": "Changement",
+            "de": "Änderung",
+            "es": "Cambio"
+          },
+          "description": {
+            "en": "postponed or advanced.",
+            "fr": "postponed ou advanced.",
+            "de": "postponed oder advanced.",
+            "es": "postponed o advanced."
+          }
+        },
+        {
+          "key": "previous_restoration_at",
+          "type": "string",
+          "label": {
+            "en": "Previous restoration",
+            "fr": "Rétablissement précédent",
+            "de": "Vorherige Wiederversorgung",
+            "es": "Restablecimiento anterior"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC).",
+            "fr": "ISO 8601 (UTC).",
+            "de": "ISO 8601 (UTC).",
+            "es": "ISO 8601 (UTC)."
+          }
+        },
+        {
+          "key": "shift_minutes",
+          "type": "number",
+          "label": {
+            "en": "Shift (min)",
+            "fr": "Décalage (min)",
+            "de": "Verschiebung (Min.)",
+            "es": "Desfase (min)"
+          },
+          "description": {
+            "en": "Positive when postponed.",
+            "fr": "Positif quand repoussé.",
+            "de": "Positiv bei Verschiebung.",
+            "es": "Positivo si se aplaza."
+          }
+        }
+      ]
+    },
+    {
+      "key": "crisis_changed",
+      "label": {
+        "en": "Enedis: exceptional event",
+        "fr": "Enedis : événement exceptionnel",
+        "de": "Enedis: außergewöhnliches Ereignis",
+        "es": "Enedis: evento excepcional"
+      },
+      "description": {
+        "en": "Enedis starts or ends an exceptional event (storm…), during which it may not list every outage.",
+        "fr": "Enedis ouvre ou clôt un événement exceptionnel (tempête…), pendant lequel il peut ne pas lister toutes les coupures.",
+        "de": "Enedis beginnt oder beendet ein außergewöhnliches Ereignis (Sturm…), währenddessen evtl. nicht jeder Ausfall gelistet wird.",
+        "es": "Enedis abre o cierra un evento excepcional (tormenta…), durante el cual puede no listar todos los cortes."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Enedis places. Leave empty for any place.",
+            "fr": "Un des lieux Enedis. Laisser vide pour tous les lieux.",
+            "de": "Einer der Enedis-Orte. Leer lassen für alle Orte.",
+            "es": "Uno de los lugares de Enedis. Dejar vacío para cualquier lugar."
+          },
+          "required": false
+        },
+        {
+          "key": "state",
+          "type": "select",
+          "label": {
+            "en": "Change",
+            "fr": "Changement",
+            "de": "Änderung",
+            "es": "Cambio"
+          },
+          "description": {
+            "en": "Leave empty for both.",
+            "fr": "Laisser vide pour les deux.",
+            "de": "Leer lassen für beides.",
+            "es": "Dejar vacío para ambos."
+          },
+          "options": [
+            {
+              "value": "started",
+              "label": {
+                "en": "Starts",
+                "fr": "Début",
+                "de": "Beginn",
+                "es": "Empieza"
+              }
+            },
+            {
+              "value": "ended",
+              "label": {
+                "en": "Ends",
+                "fr": "Fin",
+                "de": "Ende",
+                "es": "Termina"
+              }
+            }
+          ],
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "state",
+          "type": "string",
+          "label": {
+            "en": "Change",
+            "fr": "Changement",
+            "de": "Änderung",
+            "es": "Cambio"
+          },
+          "description": {
+            "en": "started or ended.",
+            "fr": "started ou ended.",
+            "de": "started oder ended.",
+            "es": "started o ended."
+          }
+        },
+        {
+          "key": "title",
+          "type": "string",
+          "label": {
+            "en": "Title",
+            "fr": "Titre",
+            "de": "Titel",
+            "es": "Título"
+          }
+        },
+        {
+          "key": "message",
+          "type": "string",
+          "label": {
+            "en": "Message of Enedis",
+            "fr": "Message d’Enedis",
+            "de": "Nachricht von Enedis",
+            "es": "Mensaje de Enedis"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_outages",
+      "label": {
+        "en": "Enedis: read the outages",
+        "fr": "Enedis : lire les coupures",
+        "de": "Enedis: Ausfälle lesen",
+        "es": "Enedis: leer los cortes"
+      },
+      "description": {
+        "en": "Whether the power is cut at a place, and until when, for a message or a condition.",
+        "fr": "Si le courant est coupé à un lieu, et jusqu’à quand, pour un message ou une condition.",
+        "de": "Ob an einem Ort der Strom ausgefallen ist und bis wann, für eine Nachricht oder Bedingung.",
+        "es": "Si hay corte de luz en un lugar, y hasta cuándo, para un mensaje o una condición."
+      },
+      "timeout_seconds": 45,
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "Leave empty for the first place.",
+            "fr": "Laisser vide pour le premier lieu.",
+            "de": "Leer lassen für den ersten Ort.",
+            "es": "Dejar vacío para el primer lugar."
+          },
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "key": "has_outage",
+          "type": "boolean",
+          "label": {
+            "en": "Outage in the commune",
+            "fr": "Coupure dans la commune",
+            "de": "Ausfall in der Gemeinde",
+            "es": "Corte en el municipio"
+          }
+        },
+        {
+          "key": "on_my_street",
+          "type": "boolean",
+          "label": {
+            "en": "Outage on my street",
+            "fr": "Coupure dans ma rue",
+            "de": "Ausfall in meiner Straße",
+            "es": "Corte en mi calle"
+          }
+        },
+        {
+          "key": "level",
+          "type": "number",
+          "label": {
+            "en": "Level",
+            "fr": "Niveau",
+            "de": "Stufe",
+            "es": "Nivel"
+          },
+          "description": {
+            "en": "0 none, 1 in the commune, 2 on my street.",
+            "fr": "0 aucune, 1 dans la commune, 2 dans ma rue.",
+            "de": "0 keiner, 1 in der Gemeinde, 2 in meiner Straße.",
+            "es": "0 ninguno, 1 en el municipio, 2 en mi calle."
+          }
+        },
+        {
+          "key": "outages",
+          "type": "number",
+          "label": {
+            "en": "Outages in the commune",
+            "fr": "Coupures dans la commune",
+            "de": "Ausfälle in der Gemeinde",
+            "es": "Cortes en el municipio"
+          }
+        },
+        {
+          "key": "restoration",
+          "type": "string",
+          "label": {
+            "en": "Expected restoration",
+            "fr": "Rétablissement prévu",
+            "de": "Erwartete Wiederversorgung",
+            "es": "Restablecimiento previsto"
+          },
+          "description": {
+            "en": "Paris time, “14/11 01:00”; empty when unknown.",
+            "fr": "Heure de Paris, « 14/11 01:00 » ; vide si inconnu.",
+            "de": "Pariser Zeit, „14.11. 01:00“; leer, wenn unbekannt.",
+            "es": "Hora de París, «14/11 01:00»; vacío si se desconoce."
+          }
+        },
+        {
+          "key": "restoration_at",
+          "type": "string",
+          "label": {
+            "en": "Expected restoration (ISO)",
+            "fr": "Rétablissement prévu (ISO)",
+            "de": "Erwartete Wiederversorgung (ISO)",
+            "es": "Restablecimiento previsto (ISO)"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC); empty when unknown.",
+            "fr": "ISO 8601 (UTC) ; vide si inconnu.",
+            "de": "ISO 8601 (UTC); leer, wenn unbekannt.",
+            "es": "ISO 8601 (UTC); vacío si se desconoce."
+          }
+        },
+        {
+          "key": "streets",
+          "type": "string",
+          "label": {
+            "en": "Places cut",
+            "fr": "Lieux coupés",
+            "de": "Betroffene Orte",
+            "es": "Lugares cortados"
+          }
+        },
+        {
+          "key": "crisis",
+          "type": "boolean",
+          "label": {
+            "en": "Exceptional event",
+            "fr": "Événement exceptionnel",
+            "de": "Außergewöhnliches Ereignis",
+            "es": "Evento excepcional"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    }
+  ]
+}

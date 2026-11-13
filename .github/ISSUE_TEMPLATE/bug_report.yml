@@ -1,0 +1,47 @@
+name: Bug report
+description: Something does not work as described in the documentation.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem. The integration has no account and no key; you may hide your street in the logs before posting.
+  - type: input
+    id: gladys-version
+    attributes:
+      label: Gladys version
+      description: Settings → System.
+      placeholder: '5.1.1'
+    validations:
+      required: true
+  - type: input
+    id: integration-version
+    attributes:
+      label: Integration version
+      description: Integrations → Coupures Enedis, or Settings → Supervision.
+      placeholder: '0.1.0'
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: Place
+      description: The commune (and the street if you do not mind), a house or a typed address, and what Enedis shows on its outage map.
+      placeholder: 'Mâcon 71000, typed address; enedis.fr shows an outage on my street'
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: |
+        Logs of the integration (Settings → Supervision), ideally with the SDK debug logs: add the environment variable `DEBUG=gladys-integration-sdk` to the container, reproduce, then copy the lines. Hide the serial numbers if you wish.
+      render: text

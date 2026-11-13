@@ -1,0 +1,367 @@
+{
+  "comment": "Generated from version 0.1.0 (the first release). Never edit to make a test pass: see test/structure.test.js.",
+  "devices": {
+    "place": {
+      "external_id": "ext:enedis-outages:place:71270-ursulines",
+      "should_poll": false,
+      "params": ["ENEDIS_INSEE", "ENEDIS_STREET"],
+      "features": [
+        {
+          "external_id": "ext:enedis-outages:place:71270-ursulines:status",
+          "category": "risk",
+          "type": "integer",
+          "min": 0,
+          "max": 2,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:enedis-outages:place:71270-ursulines:outages",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:enedis-outages:place:71270-ursulines:situation",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ],
+      "options": []
+    }
+  },
+  "manifest": {
+    "config_schema": [
+      {
+        "key": "intro",
+        "type": "section"
+      },
+      {
+        "key": "places",
+        "type": "section"
+      },
+      {
+        "key": "house_1",
+        "type": "select"
+      },
+      {
+        "key": "address_1",
+        "type": "string"
+      },
+      {
+        "key": "place_2_section",
+        "type": "section"
+      },
+      {
+        "key": "house_2",
+        "type": "select"
+      },
+      {
+        "key": "address_2",
+        "type": "string"
+      },
+      {
+        "key": "place_3_section",
+        "type": "section"
+      },
+      {
+        "key": "house_3",
+        "type": "select"
+      },
+      {
+        "key": "address_3",
+        "type": "string"
+      },
+      {
+        "key": "options",
+        "type": "section"
+      },
+      {
+        "key": "interval",
+        "type": "select"
+      },
+      {
+        "key": "language",
+        "type": "select"
+      }
+    ],
+    "scene_triggers": [
+      {
+        "key": "outage_started",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          },
+          {
+            "key": "scope",
+            "options": ["street", "commune"]
+          },
+          {
+            "key": "kind",
+            "options": ["incident", "works", "shedding", "other"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "kind",
+            "type": "string"
+          },
+          {
+            "key": "label",
+            "type": "string"
+          },
+          {
+            "key": "network",
+            "type": "string"
+          },
+          {
+            "key": "on_my_street",
+            "type": "boolean"
+          },
+          {
+            "key": "streets",
+            "type": "string"
+          },
+          {
+            "key": "started_at",
+            "type": "string"
+          },
+          {
+            "key": "restoration_at",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "outage_ended",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          },
+          {
+            "key": "scope",
+            "options": ["street", "commune"]
+          },
+          {
+            "key": "kind",
+            "options": ["incident", "works", "shedding", "other"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "kind",
+            "type": "string"
+          },
+          {
+            "key": "label",
+            "type": "string"
+          },
+          {
+            "key": "network",
+            "type": "string"
+          },
+          {
+            "key": "on_my_street",
+            "type": "boolean"
+          },
+          {
+            "key": "streets",
+            "type": "string"
+          },
+          {
+            "key": "started_at",
+            "type": "string"
+          },
+          {
+            "key": "restoration_at",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          },
+          {
+            "key": "duration_minutes",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "key": "restoration_changed",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          },
+          {
+            "key": "scope",
+            "options": ["street", "commune"]
+          },
+          {
+            "key": "change",
+            "options": ["postponed", "advanced"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "kind",
+            "type": "string"
+          },
+          {
+            "key": "label",
+            "type": "string"
+          },
+          {
+            "key": "network",
+            "type": "string"
+          },
+          {
+            "key": "on_my_street",
+            "type": "boolean"
+          },
+          {
+            "key": "streets",
+            "type": "string"
+          },
+          {
+            "key": "started_at",
+            "type": "string"
+          },
+          {
+            "key": "restoration_at",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          },
+          {
+            "key": "change",
+            "type": "string"
+          },
+          {
+            "key": "previous_restoration_at",
+            "type": "string"
+          },
+          {
+            "key": "shift_minutes",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "key": "crisis_changed",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          },
+          {
+            "key": "state",
+            "options": ["started", "ended"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "state",
+            "type": "string"
+          },
+          {
+            "key": "title",
+            "type": "string"
+          },
+          {
+            "key": "message",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "scene_actions": [
+      {
+        "key": "get_outages",
+        "fields": ["device"],
+        "outputs": [
+          {
+            "key": "has_outage",
+            "type": "boolean"
+          },
+          {
+            "key": "on_my_street",
+            "type": "boolean"
+          },
+          {
+            "key": "level",
+            "type": "number"
+          },
+          {
+            "key": "outages",
+            "type": "number"
+          },
+          {
+            "key": "restoration",
+            "type": "string"
+          },
+          {
+            "key": "restoration_at",
+            "type": "string"
+          },
+          {
+            "key": "streets",
+            "type": "string"
+          },
+          {
+            "key": "crisis",
+            "type": "boolean"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "widgets": [
+      {
+        "key": "outages",
+        "settings": ["device", "show"],
+        "options": {
+          "show": ["all", "street"]
+        }
+      }
+    ]
+  }
+}
