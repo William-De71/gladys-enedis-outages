@@ -5,7 +5,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
-## [0.1.0] - unreleased
+## [0.1.0] - 2026-11-13
 
 ### Added
 
@@ -16,3 +16,5 @@ each release from the Conventional Commits: do not edit it by hand.
 - A "Power outages" dashboard widget: the street, the outages of the commune with their places, kind, network and expected restoration, and the message of an exceptional event.
 - A "Check the places" button showing the commune and the street found for each place; Enedis read every 5 to 60 minutes (15 by default), one request per place.
 - English, French, German and Spanish everywhere: settings, devices, widgets, scenes and documentation.
+
+[0.1.0]: https://github.com/William-De71/gladys-enedis-outages/releases/tag/v0.1.0
